@@ -1,0 +1,13 @@
+
+---------------CHECKSUM-----------------------
+
+1323_Ineq-pol_Data_v1.0.0.dta (SHA-1):
+
+2DEC29FC63883C313F2B3F2B3C050F14FA7CC20F
+
+
+-----------------INFOS-------------------------
+
+Checksum allows you to verify the integrity of a data file using a specific tool, 
+for example MD5 & SHA-1 Checksum Utility, which is available for free download on 
+several websites. 
