@@ -41,19 +41,6 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \usepackage[margin=1in]{geometry}
-\usepackage{graphicx}
-\makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
-\makeatother
-% Scale images if necessary, so that they will not overflow the page
-% margins by default, and it is still possible to overwrite the defaults
-% using explicit options in \includegraphics[width, height, ...]{}
-\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-% Set default figure placement to htbp
-\makeatletter
-\def\fps@figure{htbp}
-\makeatother
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -68,10 +55,10 @@
 
 \title{Fancy Paper Title Goes Here\thanks{Replication files are
 available on the author's Github account (\url{http://github.com}).
-\textbf{Current version}: May 09, 2022; \textbf{Corresponding author}:
+\textbf{Current version}: May 30, 2022; \textbf{Corresponding author}:
 \href{mailto:email@uni-mannheim.de}{\nolinkurl{email@uni-mannheim.de}}.}}
 \author{true \and true}
-\date{May 09, 2022}
+\date{May 30, 2022}
 
 % Jesus, okay, everything above this comment is default Pandoc LaTeX template. -----
 % ----------------------------------------------------------------------------------
@@ -107,7 +94,7 @@ available on the author's Github account (\url{http://github.com}).
 
 \title{Fancy Paper Title Goes Here\thanks{Replication files are
 available on the author's Github account (\url{http://github.com}).
-\textbf{Current version}: May 09, 2022; \textbf{Corresponding author}:
+\textbf{Current version}: May 30, 2022; \textbf{Corresponding author}:
 \href{mailto:email@uni-mannheim.de}{\nolinkurl{email@uni-mannheim.de}}.}  }
 
 \date{}
@@ -182,6 +169,22 @@ Mannheim) and Marie-Therese Meye (Universtität Mannheim)},
 \LTcapwidth=.95\textwidth
 \linespread{1.05}
 \usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage{siunitx}
+\newcolumntype{d}{S[input-symbols = ()]}
 
 \newtheorem{hypothesis}{Hypothesis}
 
@@ -275,15 +278,13 @@ politics \par
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
 
-Example of in text citation is \citet{king2001}, \ldots{}
+Example of in text citation is \citet{king2001}, \ldots{} @
 
 Or you can cite like this \citep{king2001}.
 
 \hypertarget{a-subsection-in-the-introduction}{%
 \subsection{A Subsection in the
 Introduction}\label{a-subsection-in-the-introduction}}
-
-\kant[2]
 
 \hypertarget{related-literature}{%
 \section{Related Literature}\label{related-literature}}
@@ -301,6 +302,26 @@ Method}\label{empirical-strategy-or-method}}
 \hypertarget{results}{%
 \section{Results}\label{results}}
 
+\hypertarget{discussion}{%
+\subsection{Discussion}\label{discussion}}
+
+\begin{itemize}
+\item
+  Endogeneity: Reverse Causality - Immigration less likely to affect
+  expected downward mobility
+\item
+  Omitted variable bias - Controlling for several important cofounders.
+  Only cross-sectional data, so not fixed effects?
+
+  \begin{itemize}
+  \tightlist
+  \item
+    What about multilevel models?
+  \end{itemize}
+\item
+  Misspecification?
+\end{itemize}
+
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}
 
@@ -311,7 +332,43 @@ Method}\label{empirical-strategy-or-method}}
 
 You can also embed plots, for example:
 
-\includegraphics{paper_files/figure-latex/pressure-1.pdf}
+\begin{verbatim}
+## 
+## Attaching package: 'gt'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:modelsummary':
+## 
+##     escape_latex
+\end{verbatim}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{lccccc}
+\toprule
+  & OLS 1 & Poisson 1 & OLS 2 & Poisson 2 & OLS 3\\
+\midrule
+(Intercept) & \num{7948.667} & \num{8.241} & \num{16259.384} & \num{9.876} & \num{11243.544}\\
+ & (\num{2078.276}) & (\num{0.006}) & (\num{2611.140}) & (\num{0.003}) & (\num{1011.240})\\
+Literacy & \num{-39.121} & \num{0.003} & \num{3.680} & \num{0.000} & \num{-68.507}\\
+ & (\num{37.052}) & (\num{0.000}) & (\num{46.552}) & (\num{0.000}) & (\num{18.029})\\
+Clergy & \num{15.257} &  & \num{77.148} &  & \num{-16.376}\\
+ & (\num{25.735}) &  & (\num{32.334}) &  & (\num{12.522})\\
+Commerce &  & \num{0.011} &  & \num{0.001} & \\
+ &  & (\num{0.000}) &  & (\num{0.000}) & \\
+\midrule
+Num.Obs. & \num{86} & \num{86} & \num{86} & \num{86} & \num{86}\\
+R2 & \num{0.020} &  & \num{0.065} &  & \num{0.152}\\
+R2 Adj. & \num{-0.003} &  & \num{0.043} &  & \num{0.132}\\
+AIC & \num{1740.8} & \num{274160.8} & \num{1780.0} & \num{257564.4} & \num{1616.9}\\
+BIC & \num{1750.6} & \num{274168.2} & \num{1789.9} & \num{257571.7} & \num{1626.7}\\
+Log.Lik. & \num{-866.392} & \num{-137077.401} & \num{-886.021} & \num{-128779.186} & \num{-804.441}\\
+F & \num{0.866} & \num{18294.559} & \num{2.903} & \num{279.956} & \num{7.441}\\
+RMSE & \num{5843.83} & \num{57.38} & \num{7342.16} & \num{55.60} & \num{2843.47}\\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \kant[25]
 

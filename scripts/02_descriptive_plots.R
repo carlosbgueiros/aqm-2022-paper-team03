@@ -65,13 +65,15 @@ df <- df |>
   mutate(x = densCols(downward_mob,stmigrant, colramp=colorRampPalette(c("black", "white"))),
          dens = col2rgb(x)[1,] + 1)
 
+# C
+
 #par(mar = c(5, 6, 4, 2) + 0.1)
 plot(jitter(data_ineq$downward_mob),
      jitter(as.numeric(data_ineq$stmigrant)),
     # stmigrant ~ downward_mob,
      pch = 19,
     # data = df[order(df$dens),],
-     col = cols,    #viridis(1, 0.05),
+     col = viridis(1, 0.05),
      main = "Immigration as cause for Inequality",
      font.main = 1,
      xlab = "Expect Downward Mobility",
