@@ -1,105 +1,65 @@
 
 ## Complete Pooling Models ####
+# Pooling all observations from all countries
+
+m1_ord_logit <- clm(stmigrant ~ downward_mob + lrscale + incdec + saliinequ + saliunempl + forbrn + educcat, 
+                    data = data_ineq, link = "logit") # Ordinal PAckage 
+
+# Variables - 2 standard deviations
+m2_ord_logit_2sd <- clm(stmigrant ~ downward_mob + z_lrscale + z_incdec + z_saliinequ + z_saliunempl + forbrn + educcat,   
+                        data = data_ineq, link = "logit")
+
+m3_ord_logit_2sd <- clm(stmigrant ~ downward_mob + z_lrscale + z_incdec + z_saliinequ + z_saliunempl + forbrn + educcat + 
+                          female,  # include female dummy
+                        data = data_ineq, link = "logit")
+
+m4_ord_logit_2sd <- clm(stmigrant ~ downward_mob + z_lrscale + z_incdec + z_saliinequ + z_saliunempl + 
+                          z_saliimmigr + #salience of immigration
+                          forbrn + educcat,  
+                        data = data_ineq, link = "logit")
+
+## Partial Pooling - Random Effects - Multilevel #####
 
 # Pooling all observations from all countries
-m1_ord_logit <- polr(stmigrant ~ downward_mob + lrscale,  ## MASS package 
-                     data = data_ineq, 
-                     Hess = TRUE,
-                     method = "logistic")
+# nest regions within countries and observations within regions  (1|cntry) + (1|cntry:region) is equivalent to (1|cntry/region)
 
-M.plr <- arm::sim(m1_ord_logit, n.sims = 1000)
-coef.sim <- coef(M.plr, slot="coef")
-zeta.sim <- coef(M.plr, slot="zeta")
-coefall.sim <- coef(M.plr)
-
-ggpredict(m1_ord_logit, "downward_mob")
-predictions(m1_ord_logit, variables = "downward_mob")
-
-ggpredict(m1_ord_logit_clmm, c("downward_mob", "lrscale"))
-
-mydf <- ggpredict(m1_ord_logit_clmm, c("downward_mob"))
-
-## Dta grid for the quantities of interest?
-
-
-m1_ord_logit_clm <- clm(stmigrant ~ downward_mob + lrscale, data = data_ineq, link = "logit") # Ordinal PAckage
-
-m2_ord_logit_clm <- clm(stmigrant ~ downward_mob + lrscale + downward_mob * lrscale, data = data_ineq, link = "logit") # Ordinal PAckage
-
-
-m3_formula <- formula(paste("stmigrant ~ downward_mob + lrscale + downward_mob * lrscale + incdec + forbrn + educcat", collapse = " "))
-m3_ord_logit_clm <- clm(m3_formula, data = data_ineq, link = "logit") # Ordinal PAckage
-
-m3_formula <- formula(paste("stmigrant ~ downward_mob_cens + lrscale + incdec + forbrn + educcat", collapse = " "))
-m3_ord_logit_clm <- clm(m3_formula, data = data_ineq, link = "logit") # Ordinal PAckage
-
-summary(m3_ord_logit_clm)
-#incdec + # income decile
- # forbrn + # Dummy for foreign born
-  #educcat # University degree
-
-## Partial Pooling - Random Effects #####
-
-#random effect for the state for country
-m1_ord_logit_clmm <- clmm(stmigrant ~ downward_mob + lrscale + (1|cntry) + (1|region), data = data_ineq, link = "logit") # Ordinal PAckage 
-
-m2_ord_logit_clmm <- clmm(stmigrant ~ downward_mob + lrscale + (1|cntry/region), data = data_ineq, link = "logit") # Ordinal PAckage 
-
-m3_ord_logit_clmm <- clmm(stmigrant ~ downward_mob + lrscale + downward_mob * lrscale + 
-                            incdec + forbrn + educcat + (1|cntry),
-                          data = data_ineq, link = "logit") # Ordinal PAckage
-
-m3b_ord_logit_clmm <- clmm(stmigrant ~ downward_mob + lrscale +
-                            incdec + forbrn + educcat + (1|cntry/region),
-                          data = data_ineq, link = "logit") # Ordinal PAckage
-
-m3c_ord_logit_clmm <- clmm(stmigrant ~ downward_mob_cens + lrscale +
-                             incdec + forbrn + educcat + (1|cntry/region),
-                           data = data_ineq, link = "logit") # Ordinal PAckage
-
-m4_ord_logit_clmm <- clmm(stmigrant ~ downward_mob + lrscale + downward_mob * lrscale + 
-                            incdec + forbrn + educcat + (1|cntry) + (1|region),
+m1_ord_logit_clmm <- clmm(stmigrant ~ downward_mob + lrscale + incdec + saliinequ + saliunempl + forbrn + educcat + (1|cntry/region),
                           data = data_ineq, link = "logit") # Ordinal PAckage 
 
-m5_ord_logit_clmm <- clmm(stmigrant ~ downward_mob + lrscale + downward_mob * lrscale + 
-                            incdec + forbrn + educcat + (1|cntry/region), # nest regions within countries  #(1|cntry) + (1|cntry:region),
+# Variables - 2 standard deviations
+m2_ord_logit_clmm_2sd <- clmm(stmigrant ~ downward_mob + z_lrscale + z_incdec + z_saliinequ + z_saliunempl + forbrn + educcat + (1|cntry/region),
                           data = data_ineq, link = "logit") # Ordinal PAckage 
 
-# 
-m6_ord_logit_clmm <- clmm(stmigrant ~ z_downward_mob_cens + z_lrscale + z_incdec + z_saliinequ + z_saliunempl + forbrn + educcat + (1|cntry/region),
-                          data = data_ineq, link = "logit") # Ordinal PAckage 
-
-m7_ord_logit_clmm <- clmm(stmigrant ~ downward_mob + z_lrscale + z_incdec + z_saliinequ + z_saliunempl + forbrn + educcat + (1|cntry/region),
-                          data = data_ineq, link = "logit") # Ordinal PAckage 
-
-#ordinal::ranef(m7_ord_logit_clmm)
-
-#summary(m3c_ord_logit_clmm) 
-
-summary(m7_ord_logit_clmm)
-
-predict(m1_ord_logit2, type="class")
-
-## view a summary of the model
-summary(m1_ord_logit)
-summary(m2_ord_logit_clm)
-
-m1_ord_logit2 |> 
-  marginaleffects(newdata = "mean") |> 
-  summary()
-
-comparisons()
-
-predictions(m1_ord_logit)
 
 
-## Bayesian estimation ####
-#options(mc.cores=parallel::detectCores()) #Speed up regressions with "brms"
 
-m_ord_logit_brm <- brm(stmigrant ~ downward_mob + lrscale, #+ (1|cntry), 
-                       data=data_ineq, family=cumulative("logit")) # bayesian multilevel ordinal logit
+m3_ord_logit_clmm_2sd <- clmm(stmigrant ~ downward_mob + z_lrscale + z_incdec + z_saliinequ + z_saliunempl + forbrn + educcat + 
+                                female +
+                                (1|cntry/region),
+                              data = data_ineq, link = "logit") 
 
-m_ord_logit_brm <- brm(stmigrant ~ downward_mob_cens + lrscale + (1|cntry), 
-                       data=data_ineq, family=cumulative("logit")) # bayesian multilevel ordinal logit
+
+m4_ord_logit_clmm_2sd <- clmm(stmigrant ~ downward_mob + z_lrscale + z_incdec + z_saliinequ + z_saliunempl + 
+                                z_saliimmigr + 
+                                forbrn + educcat + (1|cntry/region),
+                              data = data_ineq, link = "logit")  
+
+
+## Put models inside lists for tables 
+
+no_normalized_model_list <- list("Model 1" =  m1_ord_logit, 
+                                 "Model 1 - MM" =  m1_ord_logit_clmm) 
+
+pooled_models <- list(
+  "Model 2" =  m2_ord_logit_2sd, 
+  "Model 3" =  m3_ord_logit_2sd, 
+  "Model 4" =  m4_ord_logit_2sd
+    )
+
+partial_pool_models <- list(
+  "Model 2 - MM" =  m2_ord_logit_clmm_2sd, 
+  "Model 3 - MM" =  m3_ord_logit_clmm_2sd, 
+  "Model 4 - MM" =  m4_ord_logit_clmm_2sd
+            )
 
 

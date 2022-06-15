@@ -1,0 +1,252 @@
+---
+output: 
+  stevetemplates::article2:
+   # citation_package: natbib
+    dev: cairo_pdf
+    keep_tex: true
+biblio-style: apsr
+bibliography: references.bib
+title: "Cloudy Prospects: How Expected Downward Mobility Affects Attitudes Towards Immigration"
+thanks: "Replication files are available on the authors' Github account (http://github.com). **Current version**: `r format(Sys.time(), '%B %d, %Y')`; **Corresponding authors**: cgueiros@uni-mannheim.de and mmeye@mail.uni-mannheim.de."
+author:
+- name: Carlos B. Gueiros
+  affiliation: University of Mannheim
+- name: Marie-Therese Meye
+  affiliation: University of Mannheim
+abstract: "How does perceived future downward social mobility affect beliefs on immigration as a determinant of inequality? Although a large literature examines how personal experiences influence public attitudes, however, research on social mobility as a determinant of political behavior has also focused mainly on objective measures of mobility experiences instead of subjective. Building on this, we employ individual-level data from the Inequality and Politics dataset, covering 13 countries, to provide a first analysis of how perceptions of future downward mobility affect beliefs on immigration as a determinant of inequality. We do so by estimating a discrete choice non-linear model, ordinal logit model, given the ranking in our immigration attitudes variable. We show that perceived future downward mobility results in higher levels of hostility towards immigrants. We argue that this is due to individuals judging their prospective economic downfall from a ‘scapegoat theory’ perspective. This means that individuals blame immigrants for inequality levels in their country as they perceive them as outsiders who serve the psychological need to channel frustrations of individuals towards an outside group. Our paper makes an important contribution to popular debates on the determinants of immigration attitudes and provides further impetus for the study of how expectations of downward mobility influence political behavior and attitudes, especially in democracies facing steadily declining social mobility, such as the United States."
+keywords: "social mobility, inequality, immigration, political attitudes"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+geometry: margin=1in
+mainfont: cochineal
+#sansfont: Linux Biolinum O
+fontsize: 11pt
+# doublespacing: TRUE
+endnote: no
+# pandocparas: TRUE
+sansitup: FALSE
+header-includes:
+  - \usepackage{longtable}
+  - \LTcapwidth=.95\textwidth
+#  - \usepackage{natbib}
+  - \linespread{1.05}
+  - \usepackage{hyperref}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, warning=FALSE, message=FALSE)
+
+set.seed(202206) 
+## load packages, load and clean data
+source("./scripts/01_load_data.R")
+
+```
+
+# Introduction
+
+What are the consequences of experiencing or fearing downward mobility for people's immigration attitudes? In particular, how does perceived future downward social mobility affect beliefs on immigration as a determinant of inequality? While income inequality between countries has improved, inequality within countries has become worse. Today, 71 percent of the world's population live in countries which have seen an increase inequality. This is particularly relevant as inequalities within countries are the inequalities people feel in their daily lives and use as reference points to stack up and compare themselves to others [@UnitedNations]. Rising economic inequality and inequality of opportunities are generally associated with a rise in anti-foreigner sentiment. Indeed, scapegoat theory argues that outgroup populations are often blamed by individuals as the source of experienced economic decline or viewed as unfair competition for [@Semyonov2006]. Similarly, post-liberal theory of stratification posits that the experience of economic loss will make individuals blame others rather than themselves. Only few people view losses as a personal defeat, the majority of individuals is inclined to look for someone to blame or to hold accountable for their losses [@Jackson2018]. As @OFlynn2014 highlight, individuals can attribute blame to outsiders such as immigrants regardless of whether they are actually responsible for the experienced economic decline. Simply put, in the face of fiscal, economic, and financial crises, scapegoating becomes a convenient and pervasive response. Many politicians further strengthen this rhetoric by actively painting immigrants as scapegoats of socioeconomic loss or decline [@Jackson2018]. This can contribute to individuals developing feelings of hostility towards immigrants despite not experiencing economic loss themselves. Instead, their negative attitudes are based on sentiments of solidarity with their "native" in-group [@Paskov2021].
+
+The effects of social mobility on individuals' behavioral and attitudinal outcomes has received much scholarly attention. Most recently, @Kurer2022 utilized German household panel data and predictive modeling to provide estimates of voters' social mobility expectations based on parental background and childhood circumstances. Their analysis reveals that political dissatisfaction is widespread among voters who fail to meet intergenerational mobility expectations. Previous studies have also looked at the relationship between objective measures of social mobility and redistribution preferences. Their results show that upward intergenerational mobility increases support for government-led redistribution efforts [@Lai2021; @Gugushvili2019; @Wilson2022]. Research on the effects of social mobility on democratic attitudes and voting behaviors highlights similar positive relationships between objective upward mobility and support for democracy and election participation [@Kim2021; @Gugushvili2020; @Houle2019]. @Paskov2021 further explored the relationship between objective intergenerational mobility and attitudes towards immigration using European Social Survey data (2002--2010). However, their results show no correlation between being downward mobile from parental class and more hostility towards immigrants, except in a few European countries like Greece, Italy, and Poland.
+
+To contribute to this literature at the intersection of political attitudes and social stratification, we build on insights from recent quantitative and qualitative scholarship to examine how subjective future mobility relates to individuals' beliefs on immigration as a determinant of inequality. Whereas objective mobility is only a proxy for experiences or expectations of social mobility, our focus on subjective future downward mobility allows for a more direct assessment of the experiential drivers of immigration attitudes [@Mijs2022]. Our study also uniquely posits subjective expectations of mobility as an explanatory variable of behavioral and attitudinal outcomes. We seek to examine whether the mere expectation of perceived social decline rather than the actual experience of it will affect individuals' immigration attitudes. In our exploration of this relationship, we situate our study in the literature on the scapegoat theory. We argue that individuals channel the frustration resulting from their expected social decline on immigrants, who are perceived as outsiders, and blame them for inequality levels in their country. Accordingly, we hypothesize:
+
+\vspace{0.4cm}
+
+\noindent\textit {$H_{1}$: Individuals who expect to experience downward social mobility are more likely to blame immigrants for inequality levels.}
+
+\vspace{0.4cm}
+
+\noindent To explore this hypothesis, we use individual-level survey data from the Inequality and Politics (2019) dataset and
+employ a multilevel ordinal logit model to test the proposed relationship. We utilize two main ordinal models to conduct our analysis. First we employ an ordinal logit with complete pooling of the data and second we use a multilevel ordinal logit with partial pooling. Through our multilevel analysis, we document that individuals expecting future downward social mobility are more likely to strongly believe that immigration is a determinant of inequality within their country.
+
+Our results advance previous research based on objective measures of social mobility that was unable to find a significant correlation between social mobility and immigration attitudes [see @Paskov2021]. Our study highlights the significance of research focusing on subjective instead of objective measures of mobility and inequality. It also attests to the need of future research to focus on subjective expectations of mobility as a driver of behavioral and attitudinal outcomes. Given the decline of objective intergenerational mobility in many parts of the world, the threat of social decline perceived by individuals and its subsequent consequences should be carefully examined by scholars and practitioners likewise [@Mijs2022].
+
+In the following, we present our analysis plan, the data and the empirical strategy, and discuss our results. The last section of this paper presents our conclusions.
+
+# Analysis Plan
+
+## **Data**
+
+To test the proposed effect between perceived future downward social mobility and beliefs on immigration as a determinant of inequality, we use individual-level survey data from the Inequality and Politics dataset. The Inequality and Politics dataset is an online survey which probes citizens' perceptions of political and economic and inequalities and their attitudes towards "inequality-correcting policies" [@Pontusson2020]. The survey includes representative samples of the population aged 16 to 75 fielded in fourteen countries. The countries included in the survey are Austria, Belgium, Denmark, Germany, Ireland, Italy, the Netherlands, Portugal, Spain, Sweden, Switzerland, the United Kingdom and the United States. For each country, the data consists of a sample of at least 2,000 participants and and weights for age, education, gender, income, and region. The Inequality and Politics survey was fielded by Ipsos SA between June 6th and September 19th, 2019. Answers were collected using online interviews, with a device agnostic design. Respondents took a median time of 17 minutes to complete the questionnaire [@Pontusson2020]. In our analysis, we exclude respondents with missing data or refusals on any of the relevant questions for our analysis. Without excluding missing variables or refusals, the sample included 32,000 survey participants. After excluding missing data, our sample contains 27,000 respondents.
+
+## **Variables**
+
+\noindent\textit {Dependent Variable} - The dependent variable in our analysis is respondents' a beliefs on immigration as a determinant of inequality. In the Inequality and Politics survey, respondents were asked to indicate the extent to which they agree or disagree with the following statement "The inflow of immigrants is a major reason for the rise of income inequality in [COUNTRY]." Answer options for respondents included (1) Strongly disagree; (2) Disagree; (3) Nor agree nor disagree; (4) Agree; (5) Strongly Agree; (6) Don't know [@Pontusson2020]. We thus coded our dependent variable as categorical and ordered. Respondents who answered the statement with "don't know" were excluded from the analysis sample.
+
+\vspace{0.4cm}
+
+\noindent\textit {Independent Variable} - As the independent variable we measure perceived future downward social mobility. We based this on two questions in survey. In question 1 respondents were asked to assess the current position of their household in the comparison to the rest of the population in their country. Participants had to estimate the population percentage that is (a) richer than them and that is (b) poorer than them. By design, those two percentages equal to 100. In question 2, respondents were asked to assess how they think their household will stand in five years. Participants had to give an estimation in percentage of the position of their household in comparison with the rest of the population in the respondents' country. They had to fill in the population percentage of (a) the population that would be richer than them and of (b) the population that would be poorer than them. Again, by design, those two percentages would to 100 [@Pontusson2020]. Figure 1 gives an example of how these questions looked like in the survey.
+
+![Survey Question: perceived position in the income distribution. Source: Inequality and Politics (2019)]("./variable_coding.jpeg")
+
+
+\noindent To assess the effect of perceived future downward mobility, we coded the independent variable as binary. We subtracted the percentage of respondents' estimation of the population size that is richer than them in their current situation . We coded respondents who expected to be downward mobile in the future were coded as 1. Survey participants that expected to be upward mobile or perceived their mobility to be stagnant in the future were coded as 0.
+
+\vspace{0.4cm}
+
+\noindent\textit {Covariates} - We condition on a number of variables that could be linked to individuals’ perceptions of future downward mobility as well as to their attitudes towards immigration. Using the observed-values approach, we considered specific sociodemographic variables, public attitudes, migration background, and partisanship as relevant controls. First, we control for political ideology through the categorical left-right variable. Income is included through a categorical variable on income decile. We also condition on respondents’ perceived salience of economic inequality and unemployment, both categorical variables. The education level is measured by a dummy variable indicating if respondents received university education. We also include respondents’ migration background as a binary control measure. People with a migration background might be less likely to view immigration as a determinant for inequality. Furthermore, we condition on respondents’ country and regional background. In two additional specifications, we separately control for (1) gender through a dummy variable capturing female respondents and (2) perceived salience of immigration through a categorical variable. 
+
+## **Methods**
+
+In order to investigate the hypothesized positive effect of perceived future downward social mobility and beliefs on immigration as a determinant of inequality, we will first conduct a description of our sample. Subsequently, we employ a multilevel ordinal logit model to estimate the relationship between future downward social mobility and immigration attitudes. The dependent variable, beliefs on immigration as determinant of inequality, is categorical and ordered, so we consider only non-linear ordinal models in our analysis. For instance, linear models, irrespective of the estimator in use, would not properly represent the data generating process given the type of data we have.     
+
+In our empirical approach we employ two main ordinal models. The first is an ordinal logit with complete pooling of the data and the second is a multilevel ordinal logit (partial pooling), more specifically the varying intercept model. This model includes country and country-region random effects due to the multi-level structure of the data.  There could be differences between respondents of different countries and even in regions within countries, so with the multilevel structure and distributional assumptions about the intercept  we are able to account for differences between higher level units and learn about different levels. We use the software implentation of the ordinal package by @ordinalPackage, which employs a laplace approximation, given the complexity of the likelihood function,  to get the maximum likelihood estimates. The main estimating equation of the model is specified in the equation below. 
+
+$$ y_{ijk} = \alpha_{0j[i]} + \alpha_{1jk[i]} + X_i\beta + \epsilon_{i} $$
+
+Where i denotes individual observations, survey respondents; j denotes highest level groups, in our case countries; k denotes sublevel groups, regions, $\alpha_{0j[i]}$; All individuals i in region k and country j share the same intercepts. $X_i$ is a matrix of individual level predictors (covariates), which includes a binary indicator for perceived future downward social mobility. $\epsilon_{i}$ is the idiosyncratic error term.
+
+Given the structure of the data and  the models in use, there are direct endogeneity concerns, such as confounding variables. Our approach, however, focuses more on prediction rather than causality. It helps understanding how predicted probabilities of agreeing or not with immigration statements vary according to covariates. 
+
+
+# Results and Discussion
+
+## **Descriptive Statistics**
+
+In the following, we only report some descriptive statistics of our variables of interest - perceived future downward social mobility and beliefs on immigration as a determinant of inequality. Most of the variables in the survey are either binary or categorical, thus we do not present a table, as the mean for these variables would not be meaningful, and instead we show some plots. Overall, there out of the `r nrow(ineq_pol_data)` total observations in the the dataset we use `r nrow(data_ineq)`.   
+
+\vspace{0.4cm}
+
+```{r descriptiveBar, fig.cap="Barplots"}
+
+source("./scripts/02_descriptive_plots_part1_bar.R", print.eval=TRUE)
+
+```
+
+\vspace{0.4cm}
+
+Figure 2 shows bar plots with the distribution of the main variables of interest. 
+
+```{r  lrplot, fig.cap="Left-Right position on Immigration Attitudes" }
+
+source("./scripts/02_descriptive_plots_part2.R", print.eval=TRUE)
+
+
+```
+
+\vspace{0.4cm}
+
+The plot above highlights the distribution of immigration attitudes along the political spectrum. It seems to suggest a linear relationship between right leaning and negative immigration attitudes, and left leaning and positive immigration attitudes. While opinions by moderate individuals seem to be more evenly distributed along the immigration variable, the further left or right an individual position themselves the more polarized their opinion seems to get. 
+
+
+## **Regression Results**
+
+```{r regression, echo=FALSE, warning=FALSE, message=FALSE, cache = TRUE}
+
+## estimate all models 
+source("./scripts/03_estimation.R")
+
+
+```
+
+
+### Model Seletion and Specification
+
+We estimate several models with different specifications and modifications in the independent variables. Figure 4 shows the coefficients for all models. All models present really close coefficients and significant results, with the exception of models 1, which are not rescaled. For all the other models, we adopt the rescaling argued by @gelman2008scaling, in which non-binary (numerical and categorical) variables are divided by two standard deviations to puts regression inputs on roughly the same scale no matter their original scale and more comparable to binary variables. Categorical variables are rescale as continuous in this case. However, these results are not meaningful and interpretable by themselves due to the non-linear models in question, thus we present some quantities of interest in the next section to allow for a meaningful interpretation of our results. 
+
+\vspace{0.4cm}
+
+```{r modelplot, fig.cap="Coefficient Plots"}
+
+cm <- c(
+  'downward_mob' = 'Exp. Down. Mob.',
+  'lrscale' = 'Left-Right Scale',
+  'z_lrscale' = 'Left-Right Scale',
+  'incdec' = 'Income Decile',
+  'z_incdec' = 'Income Decile',
+  'saliinequ' = 'Salience of Ineq.',
+  'z_saliinequ' = 'Salience of Ineq.', 
+  'saliunempl' = 'Salience of Unemp.',
+  'z_saliunempl' = 'Salience of Unemp.',
+  'forbrn' = 'Foreign Born',
+  'educcat' = 'Uni. Education',
+  'z_saliimmigr' = 'Salience of Immig.')
+
+table_notes <- list("Dependent Variable: Immigration as cause of Inequality (Likert-Scale)")
+  
+
+modelplot(
+  c(no_normalized_model_list, pooled_models, partial_pool_models),
+  coef_map = cm
+)
+
+
+```
+\vspace{0.4cm}
+
+In Table 1 (See Appendix), we report more details on the our estimations. The idea behind random effects is in the mixed effects models is mostly to there to make standard errors for contextual effects (country and region covariates) more conservative. 
+
+Most models are relatively close the value of coefficients and standard errors. In contrast to our expectations, the AIC and BIC criteria shows that that pooled models perform slightly better. However, the marginally higher standard errors for the multilevel models indicate that it is a more conservative approach, thus we choose the Model 2 - MM as our preferred model to get quantities of interest.      
+
+
+
+### Quantities of Interest
+
+```{r qoi, echo=FALSE, warning=FALSE, message=FALSE}
+
+#Run simulations and prepare data for first differences plots 
+source("./scripts/04_quantities_of_interest_and_sim.R")
+
+```
+
+
+Figure 5 shows the first difference between the predicted probabilities of those who expect downward mobility and those who do not expect. We used the Observed Value Approach with a range of values for downward mobility, namely, 0 and 1. The results confirm our hypothesis, as people who expect to experience downward mobility tend to strongly agree about 1 percentage point more that immigration causes inequality when compared to those who do not expect downward mobility. The "Agree" choice, however, is not in the same direction of our hypothesis and we suppose that this happens because perhaps only high levels of expected downward mobility affect immigration attitudes, then creating only very strong effects of the scapegoat theory. Additional plots of first differences using different models (See Appendix), point to the same result.
+
+\vspace{0.4cm}
+
+```{r plotFD, fig.cap="First Difference"}
+
+source("./scripts/05_ploting_QI.R", print.eval=TRUE)
+
+plot_df_ova_plot_fd_model_2_MM
+
+
+```
+
+\vspace{0.4cm}
+
+# Conclusion
+
+In our paper, we build on the long-standing research interest in public attitudes and social mobility and recent scholarly insights on the significance of subjective experiences of inequality and social mobility. We examined the relationship between perceived future downward social mobility and beliefs on immigration as a determinant of inequality. This issue is of particular contemporary relevance given growing economic inequality and declining intergenerational mobility [@Mijs2022]. Specifically, we asked whether perceived future downward social mobility affects beliefs on immigration as a determinant of inequality. We hypothesized that individuals who expect to experience downward social mobility are more likely to blame immigrants for inequality levels within their country. We argued that this is due to individuals judging their prospective economic downfall from a "scapegoat theory" perspective. This means that individuals see immigrants as outsiders and blame them for inequality levels in their country. Whether or not immigrants are actually responsible for inequality levels is irrelevant as they simply serve the psychological need of those affected by downward mobility to channel frustrations towards an outside group.
+
+Our results support our expectations. Individuals that expect to experience downward mobility in the future are more likely to strongly agree with the statement that  immigration is a determinant of inequality within their country. Utilizing individual-level survey data from the Inequality and Politics dataset (2019), we conducted two main ordinal models. First, we employed an ordinal logit with complete pooling of the data. Second, we chose a  multilevel ordinal logit (partial pooling), more specifically the varying intercept model. This model includes country and country-region random effects complimenting the multi-level structure of the data we employed for our analysis. While marginal, our effects are still significant. The effects vary between 1 to 2 percentage points in the predicted probabilities. 
+
+We caution against the causal interpretation of the patterns we observe given the cross-sectional nature of
+the data used for our analysis. We theorize that individuals’ belief on immigration as a determinant of inequality
+is being inferred from their own experience of social decline, however, our analysis cannot provide direct
+evidence of this mechanism. Rather, our results suggest a promising avenue for future research. For instance,
+qualitative scholarship could draw on life-course interviews to examine whether and how individuals link their
+own social mobility experiences to immigration attitudes or other attitudinal outcomes. Quantitative studies
+could further employ longitudinal data to identify the causal effect of changes in individuals’ subjective social
+mobility experiences on broader attitudes or behaviors. In addition, future research should extend our analysis by testing the effect of expected downward mobility as a continuous rather than binary variable. Using a continuous variable might allow studies to examine why expected downward mobility did not result in respondents “agreeing” with the statement that  immigration is a determinant of inequality but only “strongly agreeing”. Perhaps only high levels of expected downward mobility affect immigration attitudes, then creating only very strong effects of the scapegoat theory. Next steps to enrich the analysis in terms of methods would be to consider multilevel models not only with varying intercepts, but also with varying slopes and multilevel models in a Bayesian framework. 
+
+
+Despite these limitations, our results advance and complement past research documenting the relationship between social mobility and behavioral and attitudinal outcomes. We clearly show that expected social decline contributes to individuals' hostility towards immigration. Our results thus highlight that even the mere expectation of perceived social decline rather than the actual experience of it affects individuals' immigration attitudes. This attests to the difficulty of countering narratives of populist parties and the media who often blame social problems on immigration dynamics, regardless of their actual "culpability". Our findings also underscore the pervasiveness of the negative effects of perceived social mobility on both sides of the Atlantic. Our results thus call for more research on what exactly matters for how individuals perceive and interpret their (future) socioeconomic losses and gains and what consequences these have.
+
+Finally, our study also contributes to scholarly and public understanding of the recent surge in anti-immigration sentiments in parts of the world. As we posit, falling down the social ladder may lead individuals to generate hostility towards an outside group as they blame them for their social decline. Immigrants pose an easy target to channel such frustrations as they are often direct competitors for jobs. Given the decline of objective social mobility around the world, and particularly in Western countries, such behavioral and attitudinal consequences are a worrisome effect of growing economic inequality.
+
+\newpage
+# References {-}
+
+<div id="refs"></div>
+
+\newpage
+# Appendix {-} 
+
+# Regression and Model Selection
+
+```{r regtable, results='asis'}
+
+#Run simulations and prepare data for first differences plots 
+source("./scripts/06_reg_table.R", print.eval=TRUE)
+
+```
+
+# Additional QoI
+
+```{r}
+
+grid.arrange(plot_df_ova_plot_fd_model_3_MM, plot_df_ova_plot_fd_model_4_MM, nrow=2)
+
+```
+
+
